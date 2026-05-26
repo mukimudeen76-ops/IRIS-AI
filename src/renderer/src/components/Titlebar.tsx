@@ -90,11 +90,11 @@ const TitleBar = () => {
       {/* Center: AI Identity */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-4 pointer-events-none">
         {/* Voice Wave Animation */}
-        <div className="flex items-end gap-[4px] h-5">
+        <div className="flex items-end gap-1 h-5">
           {[1, 2, 3, 2].map((bar, i) => (
             <div
               key={i}
-              className="w-[3px] bg-emerald-400 rounded-full animate-pulse"
+              className="w-0.75 bg-emerald-400 rounded-full animate-pulse"
               style={{
                 height: i === 0 || i === 3 ? '60%' : '100%',
                 animationDelay: `${i * 0.15}s`,
