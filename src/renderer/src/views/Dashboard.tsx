@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Camera, Mic, MicOff, Phone, PhoneOff, Monitor, X } from 'lucide-react'
-import AICore from '../components/AICore'
-import RightPanel from '../components/RightPanel'
-import LeftPanels from '../components/LeftPanels'
-import { Status } from '../../types/pannel'
+import RightPanel from '@renderer/components/UI/RightPanel'
+import LeftPanels from '@renderer/components/UI/LeftPanels'
+import AICore from '@renderer/components/UI/AICore'
+import { Status } from '@renderer/types/panel'
 
 export default function Dashboard({
   isConnected,
