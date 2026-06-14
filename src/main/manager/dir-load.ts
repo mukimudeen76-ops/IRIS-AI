@@ -3,7 +3,6 @@ import fs from 'fs/promises'
 import path from 'path'
 import os from 'os'
 
-// --- Internal Helpers ---
 
 const getFileType = (name: string, isDirectory: boolean) => {
   if (isDirectory) return 'directory'
@@ -44,8 +43,6 @@ const getFileType = (name: string, isDirectory: boolean) => {
 
 const getSystemPath = (name: string) => {
   try {
-    // Note: This relies on Electron's app module.
-    // It is safe here because it executes dynamically after the app is ready.
     return app.getPath(name as any)
   } catch (e) {
     const home = os.homedir()
@@ -68,7 +65,6 @@ const getSystemPath = (name: string) => {
   }
 }
 
-// --- Exported Direct Function ---
 
 export async function readDirectory(dirPath: string): Promise<string> {
   try {
