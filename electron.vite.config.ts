@@ -7,9 +7,9 @@ export default defineConfig({
   main: {
     build: {
       bytecode: {
-        transformArrowFunctions: true, // Fix async arrow function crashes
-        removeBundleJS: true // Remove .js after compilation
-      }
+        transformArrowFunctions: true,
+        removeBundleJS: true 
+      },
     }
   },
   preload: {
