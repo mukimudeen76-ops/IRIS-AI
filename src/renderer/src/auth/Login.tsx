@@ -68,7 +68,7 @@ export default function LoginPage() {
       <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] bg-zinc-500/5 blur-[120px] rounded-full pointer-events-none" />
 
       {/* Micro-dot precision grid */}
-      <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.03)_1px,transparent_1px)] bg-size-[32px_32px] pointer-events-none" />
 
       <motion.div
         variants={containerVariants}
@@ -79,7 +79,7 @@ export default function LoginPage() {
         {/* ── LEFT PANEL: Ambient Terminal ── */}
         <motion.div
           variants={sidePanelVariants}
-          className="hidden lg:flex col-span-3 flex-col bg-zinc-900/30 backdrop-blur-2xl border border-white/[0.05] rounded-2xl p-6 shadow-xl relative"
+          className="hidden lg:flex col-span-3 flex-col bg-zinc-900/30 backdrop-blur-2xl border border-white/5 rounded-2xl p-6 shadow-xl relative"
         >
           <div className="flex items-center gap-3 border-b border-white/5 pb-4 mb-4">
             <TerminalSquare className="w-4 h-4 text-zinc-400" />
@@ -122,10 +122,7 @@ export default function LoginPage() {
           <div className="w-full bg-black/60 backdrop-blur-3xl border border-white/10 rounded-3xl p-10 shadow-2xl relative">
             {/* Header / Branding */}
             <div className="flex flex-col items-center text-center mb-10">
-              <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/10 shadow-inner flex items-center justify-center mb-6 relative">
-                <div className="absolute inset-0 rounded-2xl bg-emerald-500/10 blur-md" />
-                <Cpu className="w-8 h-8 text-zinc-100 relative z-10" />
-              </div>
+              <img src='/'/>
               <h1 className="text-3xl font-bold tracking-tight text-white mb-2">IRIS AI</h1>
               <p className="text-zinc-400 text-sm font-medium">Intelligent Local Workspace</p>
             </div>
@@ -160,7 +157,7 @@ export default function LoginPage() {
         {/* ── RIGHT PANEL: Ambient Diagnostics ── */}
         <motion.div
           variants={sidePanelVariants}
-          className="hidden lg:flex col-span-3 flex-col bg-zinc-900/30 backdrop-blur-2xl border border-white/[0.05] rounded-2xl p-6 shadow-xl"
+          className="hidden lg:flex col-span-3 flex-col bg-zinc-900/30 backdrop-blur-2xl border border-white/5 rounded-2xl p-6 shadow-xl"
         >
           <div className="flex items-center gap-3 border-b border-white/5 pb-4 mb-6">
             <Activity className="w-4 h-4 text-zinc-400" />
@@ -182,7 +179,7 @@ export default function LoginPage() {
               </div>
               <div className="w-full h-1 bg-black rounded-full overflow-hidden border border-white/5">
                 <div
-                  className={`h-full transition-all duration-[1500ms] ease-out ${isReady ? 'w-full bg-emerald-500' : 'w-1/3 bg-zinc-600'}`}
+                  className={`h-full transition-all duration-500 ease-out ${isReady ? 'w-full bg-emerald-500' : 'w-1/3 bg-zinc-600'}`}
                 />
               </div>
             </div>
