@@ -4,13 +4,10 @@ import path from 'path'
 import os from 'os'
 import Groq from 'groq-sdk'
 
-// Module-level state for ML pipelines and databases
 let pipeline: any = null
 let lancedb: any = null
 
-// --- Internal Helpers ---
 
-// Safely broadcast progress updates to the frontend UI
 function emitProgress(payload: { status: string; text: string; progress: number }) {
   const win = BrowserWindow.getAllWindows()[0]
   if (win && !win.isDestroyed()) {
@@ -71,7 +68,6 @@ const IGNORE_FOLDERS = new Set([
   '$recycle.bin'
 ])
 
-// --- Exported Direct Functions ---
 
 export async function indexFolder(folderPath: string): Promise<string> {
   try {
