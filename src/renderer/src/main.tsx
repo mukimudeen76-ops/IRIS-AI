@@ -2,10 +2,10 @@ import './assets/main.css'
 
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import IndexRoot from './IndexRoot'
+import App from './App'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <IndexRoot />
+    <App />
   </StrictMode>
 )
