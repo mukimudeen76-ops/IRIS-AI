@@ -6,12 +6,17 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   main: {
     build: {
-      bytecode: true // Protect main process (your agent logic)
+      bytecode: {
+        transformArrowFunctions: true, // Fix async arrow function crashes
+        removeBundleJS: true // Remove .js after compilation
+      }
     }
   },
   preload: {
     build: {
-      bytecode: true // Protect main process (your agent logic)
+      bytecode: {
+        transformArrowFunctions: true
+      }
     }
   },
   renderer: {
