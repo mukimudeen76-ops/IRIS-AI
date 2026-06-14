@@ -1,4 +1,5 @@
 import AxiosInstance from '../config/AxiosInstance'
+import { getLiveLocation } from '../logic/live-location'
 
 let cloudUser = {
   name: 'Iris User',
