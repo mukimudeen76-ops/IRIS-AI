@@ -280,7 +280,7 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4, ease: 'easeOut' }}
-        className={`z-10 flex flex-col items-center gap-8 p-12 w-[550px] rounded-3xl backdrop-blur-2xl border transition-all duration-500 ${
+        className={`z-10 flex flex-col items-center gap-8 p-12 w-137.5 rounded-3xl backdrop-blur-2xl border transition-all duration-500 ${
           error
             ? 'border-red-500/50 bg-red-950/10 shadow-[0_0_80px_rgba(239,68,68,0.15)]'
             : isAuthorized
@@ -326,7 +326,7 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
         </div>
 
         {/* Dynamic Center Content (Face / PIN / Success) */}
-        <div className="h-[280px] flex items-center justify-center w-full relative">
+        <div className="h-70 flex items-center justify-center w-full relative">
           <AnimatePresence mode="wait">
             {/* SUCCESS STATE */}
             {isAuthorized && (
@@ -368,7 +368,7 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className={`relative flex items-center justify-center w-[280px] h-[280px] rounded-2xl border-2 overflow-hidden bg-black transition-colors ${
+                className={`relative flex items-center justify-center w-70 h-70 rounded-2xl border-2 overflow-hidden bg-black transition-colors ${
                   error
                     ? 'border-red-500/50 shadow-[0_0_30px_rgba(239,68,68,0.2)]'
                     : 'border-white/10'
@@ -386,7 +386,7 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
                   <div className="absolute inset-0 pointer-events-none">
                     <div
                       ref={laserRef}
-                      className="absolute left-0 w-full h-[2px] bg-emerald-400 shadow-[0_0_15px_#34d399]"
+                      className="absolute left-0 w-full h-0.5 bg-emerald-400 shadow-[0_0_15px_#34d399]"
                     />
                     {/* Corner accents */}
                     <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-emerald-500/70 rounded-tl-lg" />
