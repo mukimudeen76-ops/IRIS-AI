@@ -56,15 +56,14 @@ const IRIS = ({
       {/* ------------------------------------------- */}
       <div className="h-16 w-full flex items-center justify-between px-6 bg-black border-b border-white/5 z-50">
         {/* Left: Branding */}
-        <div className="flex items-center gap-3 w-48">
-          <div className="relative flex items-center justify-center h-8 w-8 rounded bg-emerald-500/10 border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.1)]">
-            <RiShieldFlashLine className="text-emerald-500 text-lg animate-pulse" />
-          </div>
+        <div className="flex items-center gap-3 w-48 cursor-pointer">
+          <img src="/Logo.png" className="w-16 h-16" />
+
           <div
             onClick={() => {
               setActiveTab('DASHBOARD')
             }}
-            className="flex flex-col leading-none cursor-pointer"
+            className="flex flex-col leading-none"
           >
             <span className="font-black tracking-widest text-[13px] text-zinc-100 uppercase">
               IRIS AI
