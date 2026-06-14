@@ -650,7 +650,7 @@ export const systemToolDeclarations: FunctionDeclaration[] = [
             'The name of the setting to toggle (e.g., "wifi", "bluetooth", "location", "airplane", "flashlight"). Extract this from the user\'s command.'
         },
         state: {
-          type: 'BOOLEAN',
+          type: Type.BOOLEAN,
           description: 'Pass true to turn ON, false to turn OFF.'
         }
       },
