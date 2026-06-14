@@ -2,9 +2,7 @@ import { BrowserWindow } from 'electron'
 import { tavily } from '@tavily/core'
 import Groq from 'groq-sdk'
 
-// --- Internal Helper ---
 
-// Safely broadcast progress updates to the frontend UI
 function emitProgress(payload: { status: string; file: string; totalFound: number }) {
   const win = BrowserWindow.getAllWindows()[0]
   if (win && !win.isDestroyed()) {
@@ -12,7 +10,6 @@ function emitProgress(payload: { status: string; file: string; totalFound: numbe
   }
 }
 
-// --- Exported Direct Function ---
 
 export async function executeDeepResearch({
   query,
