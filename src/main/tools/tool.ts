@@ -5,6 +5,31 @@ import { manageApp } from '../logic/app-control'
 import { executeWebAction } from '../agent/browser-agent'
 import { scanDirectoryTree } from '../logic/fileScanner'
 import { openFileSystemItem } from '../logic/fileOpener'
+import { buildAnimatedWebsite } from '../auto/website-builder'
+import { hackWebsite } from '../logic/reality-hacker'
+import { executeWebSearch } from '../web/web-agent'
+import { executeDeepResearch } from '../services/deep-research'
+import { openInVsCode, startLiveCoding } from '../services/iris-coder'
+import { closeApp, openApp } from '../logic/app-launcher'
+import { getRunningApps } from '../manager/file-launcher'
+import { runShellCommand } from '../logic/terminal-control'
+import { teleportWindows } from '../logic/telekinesis'
+import { closeWormhole, openWormhole } from '../services/wormhole'
+import { copyFileToClipboard, executeGhostSequence,, ghostScroll ghostClickCoordinate, takeScreenshot, getScreenSize, setVolume, setVolume } from '../logic/ghost-control'
+import { readDirectory } from '../manager/dir-load'
+import { readFile } from '../manager/file-read'
+import { writeFile } from '../manager/file-write'
+import { executeFileOp } from '../manager/file-ops'
+import { openFile, revealFile } from '../manager/file-open'
+import { indexFolder, searchFiles } from '../manager/file-search'
+import { cancelIngestion, consultOracle, ingestCodebase } from '../services/RAG-oracle'
+import { saveCoreMemory, searchCoreMemory } from '../manager/permanent-memory'
+import { deleteNote, getNotes, saveNote } from '../manager/notes-manager'
+import { deleteWorkflow, deleteWorkflow, loadWorkflows, saveWorkflow } from '../workflow/workflow-manager'
+import { closeAllWidgets, createWidget } from '../auto/widget-manager'
+import { deleteImage, getGallery, openImageLocation, saveImageExternal, saveImageToGallery } from '../logic/gallery-manager'
+import { closeAdbApp, connectAdb, disconnectAdb, executeAdbQuickAction, getAdbHistory, getAdbNotifications, getAdbTelemetry, getMobileInfoAi, openAdbApp, pullFileFromAdb, pushFileToAdb, swipeAdb, takeAdbScreenshot, tapAdb, toggleAdbHardware } from '../mobile/adb-manager'
+import { createDraft, readEmails, sendEmail } from '../logic/gmail-manager'
 
 export const systemToolDeclarations: FunctionDeclaration[] = [
   {
@@ -939,18 +964,106 @@ export const systemToolDeclarations: FunctionDeclaration[] = [
 ]
 
 const toolHandlers: Record<string, (args: any) => Promise<any>> = {
-  get_system_stats: () => fetchSystemStats(),
-  get_installed_apps: () => fetchInstalledApps(),
-  get_storage_drives: () => fetchStorageDrives(),
+  build_animated_website: (args) =>
+    buildAnimatedWebsite({ prompt: args.prompt, geminiKey: args.geminiKey }),
+  hack_website: (args) =>
+    hackWebsite({ url: args.url, mode: args.mode, customText: args.customText }),
+  smart_web_agent: (args) => executeWebSearch(args.query),
+  execute_deep_research: (args) =>
+    executeDeepResearch({ query: args.query, tavilyKey: args.tavilyKey, groqKey: args.groqKey }),
+  start_live_coding: (args) =>
+    startLiveCoding({ prompt: args.prompt, filename: args.filename, geminiKey: args.geminiKey }),
+
+  // 💻 SYSTEM & OS CONTROL
+  open_app: (args) => openApp(args.appName),
+  close_app: (args) => closeApp(args.appName),
+  get_running_apps: () => getRunningApps(),
+  run_shell_command: (args) => runShellCommand({ command: args.command, cwd: args.cwd }),
+  teleport_windows: (args) => teleportWindows(args.commands), // commands is an array of { appName, position }
+  open_wormhole: (args) => openWormhole(args.port),
+  close_wormhole: () => closeWormhole(),
+
+  // 👻 GHOST AUTOMATION & UI INTERACTION
+  execute_ghost_sequence: (args) => executeGhostSequence(args.actions),
+  ghost_click_coordinate: (args) =>
+    ghostClickCoordinate({ x: args.x, y: args.y, doubleClick: args.doubleClick }),
+  ghost_scroll: (args) => ghostScroll({ direction: args.direction, amount: args.amount }),
+  copy_file_to_clipboard: (args) => copyFileToClipboard(args.filePath),
+  take_screenshot: () => takeScreenshot(),
+  get_screen_size: () => getScreenSize(),
+  set_volume: (args) => setVolume(args.level),
+
+  // 📁 FILE SYSTEM OPERATIONS
+  read_directory: (args) => readDirectory(args.dirPath),
+  read_file: (args) => readFile(args.filePath),
+  write_file: (args) => writeFile({ fileName: args.fileName, content: args.content }),
   file_system_operation: (args) =>
-    executeFSOperation(args.action, args.targetPath, args.destPath, args.content),
-  manage_application: (args) => manageApp(args.action, args.appName),
-  smart_web_agent: (args) => executeWebAction(args.query, args.intent),
-  scan_directory: (args) => {
-    const depth = args.maxDepth !== undefined ? Math.min(args.maxDepth, 10) : 1
-    return scanDirectoryTree(args.targetPath, 0, depth)
-  },
-  open_file_natively: (args) => openFileSystemItem(args.targetPath, args.specificApp)
+    executeFileOp({
+      operation: args.operation,
+      sourcePath: args.sourcePath,
+      destPath: args.destPath
+    }),
+  open_file: (args) => openFile(args.filePath),
+  reveal_file: (args) => revealFile(args.filePath),
+  open_in_vscode: (args) => openInVsCode(args.filePath),
+
+  // 🧠 NEURAL ENGINE & ORACLE
+  index_folder: (args) => indexFolder(args.folderPath),
+  search_local_files: (args) => searchFiles({ query: args.query, groqKey: args.groqKey }),
+  ingest_codebase: (args) => ingestCodebase({ dirPath: args.dirPath, geminiKey: args.geminiKey }),
+  consult_oracle: (args) =>
+    consultOracle({ query: args.query, geminiKey: args.geminiKey, groqKey: args.groqKey }),
+  cancel_ingestion: () => cancelIngestion(),
+
+  // 💾 MEMORY, NOTES & WORKFLOWS
+  save_core_memory: (args) => saveCoreMemory(args.fact),
+  search_core_memory: () => searchCoreMemory(),
+  save_note: (args) => saveNote({ title: args.title, content: args.content }),
+  get_notes: () => getNotes(),
+  delete_note: (args) => deleteNote(args.filename),
+  load_workflows: () => loadWorkflows(),
+  save_workflow: (args) =>
+    saveWorkflow({
+      name: args.name,
+      description: args.description,
+      nodes: args.nodes,
+      edges: args.edges
+    }),
+  delete_workflow: (args) => deleteWorkflow(args.name),
+
+  // 🎨 UI WIDGETS & GALLERY
+  create_widget: (args) =>
+    createWidget({ htmlCode: args.htmlCode, width: args.width, height: args.height }),
+  close_all_widgets: () => closeAllWidgets(),
+  get_gallery: () => getGallery(),
+  save_image_to_gallery: (args) =>
+    saveImageToGallery({ title: args.title, base64Data: args.base64Data }),
+  delete_image: (args) => deleteImage(args.filename),
+  open_image_location: (args) => openImageLocation(args.filePath),
+  save_image_external: (args) => saveImageExternal(args.sourcePath),
+
+  // 📱 ADB MOBILE CONTROL
+  adb_get_history: () => getAdbHistory(),
+  adb_connect: (args) => connectAdb({ ip: args.ip, port: args.port }),
+  adb_disconnect: () => disconnectAdb(),
+  adb_telemetry: () => getAdbTelemetry(),
+  adb_get_mobile_info_ai: () => getMobileInfoAi(),
+  adb_quick_action: (args) => executeAdbQuickAction(args.action), // 'camera' | 'wake' | 'lock' | 'home'
+  adb_hardware_toggle: (args) => toggleAdbHardware({ setting: args.setting, state: args.state }),
+  adb_open_app: (args) => openAdbApp(args.packageName),
+  adb_close_app: (args) => closeAdbApp(args.packageName),
+  adb_tap: (args) => tapAdb({ xPercent: args.xPercent, yPercent: args.yPercent }),
+  adb_swipe: (args) => swipeAdb(args.direction), // 'up' | 'down' | 'left' | 'right'
+  adb_get_notifications: () => getAdbNotifications(),
+  adb_screenshot: () => takeAdbScreenshot(),
+  adb_push_file: (args) => pushFileToAdb({ sourcePath: args.sourcePath, destPath: args.destPath }),
+  adb_pull_file: (args) =>
+    pullFileFromAdb({ sourcePath: args.sourcePath, destPath: args.destPath }),
+
+  // 📧 GMAIL INTEGRATION
+  gmail_read: (args) => readEmails(args.maxResults),
+  gmail_send: (args) => sendEmail({ to: args.to, subject: args.subject, body: args.body }),
+  gmail_draft: (args) => createDraft({ to: args.to, subject: args.subject, body: args.body })
 }
 
 export async function executeSystemTool(fc: any) {
