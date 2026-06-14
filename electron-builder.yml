@@ -6,11 +6,10 @@ directories:
   # Critical for protection
 electronFuses:
   EnableEmbeddedAsarIntegrityValidation: true
-  OnlyLoadAppFromAsar: true # Only load app code from ASAR
+  OnlyLoadAppFromAsar: true 
   EnableContextIsolation: true
   EnableNodeIntegration: false
 
-# 🔴 FIX 1: Set compression to "store" to prevent the 32-bit mmap memory crash
 compression: store
 
 files:
@@ -20,7 +19,6 @@ files:
   - '!{.eslintcache,eslint.config.mjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
   - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
   - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json,credentials.json}'
-  # 🔴 FIX 2: Explicitly block massive local databases and AI model folders
   - '!models/**/*'
   - '!vectordb/**/*'
   - '!lancedb/**/*'
