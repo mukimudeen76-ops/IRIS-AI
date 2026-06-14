@@ -5,7 +5,6 @@ import { GoogleGenAI } from '@google/genai'
 
 let previewWin: BrowserWindow | null = null
 
-// Exported directly as a callable async function
 export async function buildAnimatedWebsite({ prompt, geminiKey }) {
   try {
     previewWin = new BrowserWindow({
