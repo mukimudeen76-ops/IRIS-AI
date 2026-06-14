@@ -84,7 +84,6 @@ const PROCESS_NAMES: Record<string, string> = {
   files: 'explorer.exe'
 }
 
-// Exported directly to open applications
 export async function openApp(
   appName: string
 ): Promise<{ success: boolean; message?: string; error?: string }> {
@@ -100,7 +99,6 @@ export async function openApp(
   })
 }
 
-// Exported directly to kill processes
 export async function closeApp(
   appName: string
 ): Promise<{ success: boolean; message?: string; error?: string }> {
@@ -132,7 +130,6 @@ export async function closeApp(
   })
 }
 
-// --- Internal Helper Functions ---
 
 function executeCommand(command: string, appName: string, resolve: any) {
   exec(command, (error) => {
