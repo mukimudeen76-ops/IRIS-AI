@@ -1,9 +1,12 @@
-import { IpcMain, shell } from 'electron'
+import { shell } from 'electron'
 import puppeteer from 'puppeteer-extra'
 import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 import { load } from 'cheerio'
 
+// Initialize the stealth plugin at the module level
 puppeteer.use(StealthPlugin())
+
+// --- Internal Helpers ---
 
 const USER_BOOKMARKS: Record<string, string> = {
   instagram: 'https://instagram.com',
@@ -67,74 +70,76 @@ const getSmartUrl = (
   return null
 }
 
-export default function registerWebAgent(ipcMain: IpcMain) {
-  ipcMain.handle('google-search', async (_event, query: string) => {
-    let browser: any = null
+// --- Exported Direct Function ---
 
-    try {
-      const smartRoute = getSmartUrl(query)
-      const finalUrl = smartRoute
-        ? smartRoute.url
-        : `https://www.google.com/search?q=${encodeURIComponent(query)}`
+export async function executeWebSearch(query: string): Promise<string> {
+  let browser: any = null
 
-      shell.openExternal(finalUrl)
+  try {
+    const smartRoute = getSmartUrl(query)
+    const finalUrl = smartRoute
+      ? smartRoute.url
+      : `https://www.google.com/search?q=${encodeURIComponent(query)}`
 
-      if (smartRoute && smartRoute.skipScrape) {
-        return `I've opened ${smartRoute.source} for you.`
-      }
+    // Open the target in the user's default native browser instantly
+    shell.openExternal(finalUrl)
 
-      browser = await puppeteer.launch({
-        headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
-      })
+    if (smartRoute && smartRoute.skipScrape) {
+      return `I've opened ${smartRoute.source} for you.`
+    }
 
-      const page = await browser.newPage()
-      await page.setUserAgent(
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-      )
+    // Launch headless Chromium to quietly scrape context
+    browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
+    })
 
-      const scrapeUrl = smartRoute
-        ? finalUrl
-        : `https://duckduckgo.com/?q=${encodeURIComponent(query)}&ia=web`
+    const page = await browser.newPage()
+    await page.setUserAgent(
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    )
 
-      await page.goto(scrapeUrl, { waitUntil: 'networkidle2', timeout: 15000 })
+    const scrapeUrl = smartRoute
+      ? finalUrl
+      : `https://duckduckgo.com/?q=${encodeURIComponent(query)}&ia=web`
 
-      const html = await page.content()
-      const $ = load(html)
-      let summary = ''
+    await page.goto(scrapeUrl, { waitUntil: 'networkidle2', timeout: 15000 })
 
-      if (smartRoute?.source === 'GitHub') {
-        const name = $('.p-name').text().trim()
-        const bio = $('.p-note').text().trim()
-        summary = `GitHub Profile: ${name}\nBio: ${bio}`
-      } else {
-        const paragraphs = $('p')
+    const html = await page.content()
+    const $ = load(html)
+    let summary = ''
+
+    if (smartRoute?.source === 'GitHub') {
+      const name = $('.p-name').text().trim()
+      const bio = $('.p-note').text().trim()
+      summary = `GitHub Profile: ${name}\nBio: ${bio}`
+    } else {
+      const paragraphs = $('p')
+        .map((_, el) => $(el).text().trim())
+        .get()
+        .filter((t) => t.length > 50)
+        .slice(0, 3)
+
+      summary = paragraphs.join('\n\n')
+
+      if (!summary) {
+        const snippets = $('.result__snippet')
           .map((_, el) => $(el).text().trim())
           .get()
-          .filter((t) => t.length > 50)
           .slice(0, 3)
-
-        summary = paragraphs.join('\n\n')
-
-        if (!summary) {
-          const snippets = $('.result__snippet')
-            .map((_, el) => $(el).text().trim())
-            .get()
-            .slice(0, 3)
-          summary = snippets.join('\n\n')
-        }
+        summary = snippets.join('\n\n')
       }
-
-      await browser.close()
-
-      if (!summary || summary.length < 20) {
-        return "I've opened the website for you."
-      }
-
-      return `I've opened the link. Here is a quick summary:\n${summary.substring(0, 500)}...`
-    } catch (error: any) {
-      if (browser) await browser.close()
-      return "I opened the browser, but couldn't read the content."
     }
-  })
+
+    await browser.close()
+
+    if (!summary || summary.length < 20) {
+      return "I've opened the website for you."
+    }
+
+    return `I've opened the link. Here is a quick summary:\n${summary.substring(0, 500)}...`
+  } catch (error: any) {
+    if (browser) await browser.close()
+    return "I opened the browser, but couldn't read the content."
+  }
 }
