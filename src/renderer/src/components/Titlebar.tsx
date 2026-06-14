@@ -26,50 +26,52 @@ const TitleBar = () => {
   const close = () => window.electron.ipcRenderer.send('window-close')
 
   return (
-    <div className="w-full h-14 flex items-center justify-between px-0 bg-zinc-950/80 backdrop-blur-2xl border-b border-zinc-800/50 drag-region select-none z-50 relative ">
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-emerald-500/20 to-transparent" />
+    <div className="w-full h-12 flex items-center justify-between bg-zinc-950/90 backdrop-blur-md border-b border-white/5 drag-region select-none z-50 relative">
+      {/* Precision Bottom Accent Line */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/15 to-transparent pointer-events-none" />
 
-      <div className="flex items-center h-full pl-5 pr-3 gap-3 z-50 no-drag">
+      {/* LEFT SECTION: Platform Window Controls / Brand Icon */}
+      <div className="flex items-center h-full pl-4 z-50 no-drag min-w-[120px]">
         {isMac ? (
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 group/lights">
             <button
               onClick={close}
-              className="w-4 h-4 rounded-full bg-[#ff5f57] border border-[#e0443e]/30 flex items-center justify-center group transition-all duration-200 hover:scale-110"
+              className="w-3 h-3 rounded-full bg-[#ff5f56] border border-black/10 flex items-center justify-center transition-all duration-150 active:brightness-70"
             >
               <RiCloseLine
-                size={10}
-                className="opacity-0 group-hover:opacity-100 text-[#4d0000] transition-opacity duration-150 font-bold"
+                size={8}
+                className="opacity-0 group-hover/lights:opacity-100 text-[#4c0002] transition-opacity duration-150 font-bold"
               />
             </button>
             <button
               onClick={minimize}
-              className="w-4 h-4 rounded-full bg-[#febc2e] border border-[#d89e24]/30 flex items-center justify-center group transition-all duration-200 hover:scale-110"
+              className="w-3 h-3 rounded-full bg-[#ffbd2e] border border-black/10 flex items-center justify-center transition-all duration-150 active:brightness-70"
             >
               <RiSubtractLine
-                size={10}
-                className="opacity-0 group-hover:opacity-100 text-[#995700] transition-opacity duration-150 font-bold"
+                size={8}
+                className="opacity-0 group-hover/lights:opacity-100 text-[#5c3e00] transition-opacity duration-150 font-bold"
               />
             </button>
             <button
               onClick={toggleMaximize}
-              className="w-4 h-4 rounded-full bg-[#28c840] border border-[#1aab29]/30 flex items-center justify-center group transition-all duration-200 hover:scale-110"
+              className="w-3 h-3 rounded-full bg-[#27c93f] border border-black/10 flex items-center justify-center transition-all duration-150 active:brightness-70"
             >
               <RiCheckboxBlankLine
-                size={8}
-                className="opacity-0 group-hover:opacity-100 text-[#006500] transition-opacity duration-150 font-bold"
+                size={6}
+                className="opacity-0 group-hover/lights:opacity-100 text-[#024d04] transition-opacity duration-150 font-bold"
               />
             </button>
           </div>
         ) : (
-          <div className="flex items-center gap-3 opacity-80">
-            <div className="relative flex items-center justify-center w-6 h-6">
-              <div className="absolute inset-0 rounded-lg bg-emerald-500/20 blur-md animate-pulse" />
+          <div className="flex items-center gap-2.5 opacity-90">
+            <div className="relative flex items-center justify-center w-5 h-5">
+              <div className="absolute inset-0 rounded bg-emerald-500/10 blur-sm animate-pulse" />
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
-                className="w-5 h-5 text-emerald-400 relative z-10"
+                className="w-4 h-4 text-emerald-400 relative z-10"
                 stroke="currentColor"
-                strokeWidth="1.5"
+                strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
@@ -78,79 +80,85 @@ const TitleBar = () => {
                 <line x1="12" x2="12" y1="19" y2="22" />
               </svg>
             </div>
-            <span className="text-xs font-semibold text-zinc-400 tracking-widest uppercase">
-              IRIS
-            </span>
+            <span className="text-xs font-bold font-mono tracking-widest text-zinc-300">IRIS</span>
           </div>
         )}
       </div>
 
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-4 pointer-events-none">
-        <div className="flex items-end gap-1 h-5">
-          {[1, 2, 3, 2].map((bar, i) => (
+      {/* CENTER SECTION: Global Environment Status Readout */}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-3.5 pointer-events-none">
+        {/* Responsive Micro Waveform */}
+        <div className="flex items-center gap-0.5 h-3">
+          {[0.4, 0.8, 0.5, 0.3].map((delay, i) => (
             <div
               key={i}
-              className="w-0.75 bg-emerald-400 rounded-full animate-pulse"
+              className="w-0.5 bg-emerald-400 rounded-full opacity-80"
               style={{
-                height: i === 0 || i === 3 ? '60%' : '100%',
-                animationDelay: `${i * 0.15}s`,
-                animationDuration: '1.4s',
-                boxShadow: '0 0 8px rgba(52, 211, 153, 0.5)'
+                height: i === 0 || i === 3 ? '50%' : '100%',
+                animation: `pulse 1.6s infinite ease-in-out`,
+                animationDelay: `${delay}s`,
+                boxShadow: '0 0 6px rgba(52, 211, 153, 0.4)'
               }}
             />
           ))}
         </div>
 
-        <div className="flex items-center gap-2.5">
-          <span className="text-xs font-bold text-zinc-100 tracking-[0.3em] uppercase font-mono">
+        {/* Status Copy */}
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-bold text-zinc-200 tracking-widest uppercase font-mono">
             IRIS
           </span>
-          <span className="text-[11px] text-zinc-600 font-mono">//</span>
-          <span className="text-[11px] font-medium text-zinc-500 tracking-widest uppercase font-mono">
-            {isMac ? 'macOS' : 'SYSTEM'}
+          <span className="text-xs text-zinc-700 font-mono select-none">/</span>
+          <span className="text-xs font-medium text-zinc-500 tracking-wider uppercase font-mono">
+            {isMac ? 'macOS.Core' : 'System.Enclave'}
           </span>
         </div>
 
-        <div className="relative flex items-center justify-center w-2.5 h-2.5">
-          <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-30 animate-ping" />
+        {/* Live System Beacon */}
+        <div className="relative flex items-center justify-center w-2 h-2">
+          <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500/30 animate-ping" />
           <span
-            className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"
-            style={{ boxShadow: '0 0 10px rgba(52, 211, 153, 0.7)' }}
+            className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400"
+            style={{ boxShadow: '0 0 8px rgba(52, 211, 153, 0.8)' }}
           />
         </div>
       </div>
 
-      {!isMac && (
-        <div className="flex h-full no-drag z-50">
-          <button
-            onClick={minimize}
-            className="w-14 h-full flex items-center justify-center text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-all duration-200"
-            title="Minimize"
-          >
-            <RiSubtractLine size={18} strokeWidth={1.5} />
-          </button>
-          <button
-            onClick={toggleMaximize}
-            className="w-14 h-full flex items-center justify-center text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-all duration-200"
-            title={isMaximized ? 'Restore' : 'Maximize'}
-          >
-            {isMaximized ? (
-              <RiCheckboxMultipleBlankLine size={15} strokeWidth={1.5} />
-            ) : (
-              <RiCheckboxBlankLine size={15} strokeWidth={1.5} />
-            )}
-          </button>
-          <button
-            onClick={close}
-            className="w-14 h-full flex items-center justify-center text-zinc-500 hover:text-white hover:bg-red-500/90 transition-all duration-200"
-            title="Close"
-          >
-            <RiCloseLine size={20} strokeWidth={1.5} />
-          </button>
-        </div>
-      )}
-
-      {isMac && <div className="w-25" />}
+      {/* RIGHT SECTION: Window Action Button Strip (Windows) or Balance Spacer (Mac) */}
+      <div className="flex h-full no-drag z-50 min-w-[120px] justify-end">
+        {!isMac ? (
+          <div className="flex h-full items-center">
+            <button
+              onClick={minimize}
+              className="w-12 h-full flex items-center justify-center text-zinc-400 hover:text-zinc-100 hover:bg-white/5 transition-colors duration-150"
+              title="Minimize"
+            >
+              <RiSubtractLine size={16} />
+            </button>
+            <button
+              onClick={toggleMaximize}
+              className="w-12 h-full flex items-center justify-center text-zinc-400 hover:text-zinc-100 hover:bg-white/5 transition-colors duration-150"
+              title={isMaximized ? 'Restore' : 'Maximize'}
+            >
+              {isMaximized ? (
+                <RiCheckboxMultipleBlankLine size={14} />
+              ) : (
+                <RiCheckboxBlankLine size={14} />
+              )}
+            </button>
+            <button
+              onClick={close}
+              className="w-12 h-full flex items-center justify-center text-zinc-400 hover:text-white hover:bg-red-500/80 transition-colors duration-150"
+              title="Close"
+            >
+              <RiCloseLine size={18} />
+            </button>
+          </div>
+        ) : (
+          /* Empty structural balance block for proper macOS center alignment */
+          <div className="w-12 h-full pointer-events-none" />
+        )}
+      </div>
     </div>
   )
 }
