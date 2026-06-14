@@ -6,10 +6,8 @@ import path from 'path'
 
 const execAsync = util.promisify(exec)
 
-// Track the active connection state at the module level
 let activeDevice: { ip: string; port: string } | null = null
 
-// --- Internal Helpers ---
 
 function getPaths() {
   const dirPath = path.join(app.getPath('userData'), 'Connected Devices')
@@ -40,7 +38,6 @@ async function saveDeviceToHistory(ip: string, port: string, model: string) {
   } catch (e) {}
 }
 
-// --- Exported Direct Functions ---
 
 export async function getAdbHistory() {
   try {
