@@ -63,7 +63,10 @@ const contextPrompt = `
 
 # 🧠 MEMORY (Last Context)
 
----
-`
+${
+  pastContext !== 'No previous conversation history.'
+    ? `CRITICAL DIRECTIVE: You are already mid-conversation. Resume seamlessly based on the memory log below. DO NOT say hello, do not ask how you can help, and do not introduce yourself again. Just answer the prompt.\n\n[MEMORY LOG]\n${pastContext}`
+    : `This is a fresh session. A brief, sharp greeting is appropriate.`
+}`
 
 export const finalSystemInstruction = IRIS_SYSTEM_INSTRUCTION + contextPrompt
