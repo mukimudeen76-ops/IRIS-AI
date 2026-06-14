@@ -31,7 +31,14 @@ interface IrisProps {
 
 const glassPanel = 'bg-zinc-950/40 backdrop-blur-xl border border-white/5 rounded-2xl shadow-xl'
 
-const IRIS = (props: IrisProps) => {
+const IRIS = ({
+  isConnected,
+  toggleConnection,
+  systemStatus,
+  isSpeaking,
+  isMuted,
+  handleMicToggle
+}: IrisProps) => {
   const [activeTab, setActiveTab] = useState('DASHBOARD')
 
   return (
@@ -92,7 +99,7 @@ const IRIS = (props: IrisProps) => {
           {activeTab === 'Macros' && <WorkFlowEditorView />}
           {/* {activeTab === 'Apps' && <AppsView />} */}
           {activeTab === 'NOTES' && <NotesView glassPanel={glassPanel} />}
-          {activeTab === 'SETTINGS' && <SettingsView isSystemActive={props.isSystemActive} />}
+          {/* {activeTab === 'SETTINGS' && <SettingsView isSystemActive={props.isSystemActive} />} */}
           {activeTab === 'GALLERY' && <GalleryView />}
         </Suspense>
       </div>
