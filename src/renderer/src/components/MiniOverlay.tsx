@@ -27,7 +27,6 @@ const MiniOverlay = ({
   isMuted,
   handleMicToggle
 }: OverlayProps) => {
-  const [isTalking, setIsTalking] = useState(false)
   const expand = () => {
     window.electron.ipcRenderer.send('toggle-overlay')
   }
@@ -36,10 +35,10 @@ const MiniOverlay = ({
     <div className="w-full h-full flex items-center justify-between px-3 bg-zinc-950/90 backdrop-blur-xl rounded-full border border-emerald-500/30 drag-region overflow-hidden">
       <div className="flex items-center gap-3 no-drag">
         <div
-          className={`w-8 h-8 rounded-full flex items-center justify-center border transition-all duration-300 ${isConnected ? (isTalking ? 'border-emerald-500 bg-emerald-500/20 shadow-[0_0_15px_#10b981]' : 'border-emerald-500/50 bg-emerald-900/20') : 'border-zinc-700 bg-zinc-900'}`}
+          className={`w-8 h-8 rounded-full flex items-center justify-center border transition-all duration-300 ${isConnected ? (isSpeaking ? 'border-emerald-500 bg-emerald-500/20 shadow-[0_0_15px_#10b981]' : 'border-emerald-500/50 bg-emerald-900/20') : 'border-zinc-700 bg-zinc-900'}`}
         >
           <div
-            className={`w-2.5 h-2.5 rounded-full transition-colors duration-300 ${isConnected ? (isTalking ? 'bg-emerald-400' : 'bg-emerald-600') : 'bg-red-900'}`}
+            className={`w-2.5 h-2.5 rounded-full transition-colors duration-300 ${isConnected ? (isSpeaking ? 'bg-emerald-400' : 'bg-emerald-600') : 'bg-red-900'}`}
           />
         </div>
       </div>
