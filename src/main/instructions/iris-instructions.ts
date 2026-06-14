@@ -62,7 +62,7 @@ const contextPrompt = `
 ---
 
 # 🧠 MEMORY (Last Context)
-${JSON.stringify(history)}
+
 ---
 `
 
