@@ -1,43 +1,71 @@
-import fs from 'fs'
+import { app } from 'electron'
+import fs from 'fs/promises'
+import { existsSync, mkdirSync } from 'fs'
 import path from 'path'
-import { IpcMain, App } from 'electron'
 
-export default function registerPermanentMemory({ ipcMain, app }: { ipcMain: IpcMain; app: App }) {
-  const MEMORY_DIR = path.resolve(app.getPath('userData'), 'Memory')
-  const FILE_PATH = path.join(MEMORY_DIR, 'saved-user-memory.json')
+// Define the shape of a memory entry
+export interface MemoryEntry {
+  fact: string
+  timestamp: string
+}
 
-  if (!fs.existsSync(MEMORY_DIR)) fs.mkdirSync(MEMORY_DIR, { recursive: true })
+// Internal helper to safely resolve the path at runtime
+function getMemoryFilePath(): string {
+  const memoryDir = path.resolve(app.getPath('userData'), 'Memory')
 
-  ipcMain.handle('save-core-memory', async (_event, fact: string) => {
+  // Synchronous check/create ensures no race conditions if multiple functions fire at once
+  if (!existsSync(memoryDir)) {
+    mkdirSync(memoryDir, { recursive: true })
+  }
+
+  return path.join(memoryDir, 'saved-user-memory.json')
+}
+
+// Exported directly to save a new fact to the JSON bank
+export async function saveCoreMemory(fact: string): Promise<boolean> {
+  try {
+    const filePath = getMemoryFilePath()
+    let memoryBank: MemoryEntry[] = []
+
     try {
-      let memoryBank: { fact: string; timestamp: string }[] = []
-
-      if (fs.existsSync(FILE_PATH)) {
-        const data = fs.readFileSync(FILE_PATH, 'utf-8')
-        memoryBank = data ? JSON.parse(data) : []
+      const data = await fs.readFile(filePath, 'utf-8')
+      memoryBank = data ? JSON.parse(data) : []
+    } catch (readErr: any) {
+      // If the file doesn't exist yet (ENOENT), that's fine. We just start with an empty array.
+      if (readErr.code !== 'ENOENT') {
+        console.error('Error reading memory file:', readErr)
       }
-
-      memoryBank.push({
-        fact: fact,
-        timestamp: new Date().toISOString()
-      })
-
-      fs.writeFileSync(FILE_PATH, JSON.stringify(memoryBank, null, 2))
-      return true
-    } catch (err) {
-      return false
     }
-  })
 
-  ipcMain.handle('search-core-memory', async () => {
+    memoryBank.push({
+      fact: fact,
+      timestamp: new Date().toISOString()
+    })
+
+    await fs.writeFile(filePath, JSON.stringify(memoryBank, null, 2), 'utf-8')
+    return true
+  } catch (err) {
+    console.error('Failed to save core memory:', err)
+    return false
+  }
+}
+
+// Exported directly to retrieve all stored facts
+export async function searchCoreMemory(): Promise<MemoryEntry[]> {
+  try {
+    const filePath = getMemoryFilePath()
+
     try {
-      if (fs.existsSync(FILE_PATH)) {
-        const data = fs.readFileSync(FILE_PATH, 'utf-8')
-        return data ? JSON.parse(data) : []
+      const data = await fs.readFile(filePath, 'utf-8')
+      return data ? JSON.parse(data) : []
+    } catch (readErr: any) {
+      if (readErr.code === 'ENOENT') {
+        return [] // Return empty if the file hasn't been created yet
       }
-      return []
-    } catch (err) {
-      return []
+      throw readErr
     }
-  })
+  } catch (err) {
+    console.error('Failed to search core memory:', err)
+    return []
+  }
 }
