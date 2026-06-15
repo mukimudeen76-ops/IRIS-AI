@@ -16,7 +16,6 @@ function getProjectsDir(): string {
 export async function startLiveCoding({ prompt, filename }: { prompt: string; filename: string }) {
   const mainWindow = BrowserWindow.getAllWindows()[0]
 
-  // 1. Tell frontend to open the widget and show the initializing state
   if (mainWindow) {
     mainWindow.webContents.send('open-coding-widget', { filename })
   }
@@ -27,7 +26,6 @@ export async function startLiveCoding({ prompt, filename }: { prompt: string; fi
 
     await fs.writeFile(filePath, '// Boss, connection established. Waiting for AI stream...\n')
 
-    // 2. Safely read from your existing encrypted vault
     let geminiKey = ''
     const secureConfigPath = path.join(app.getPath('userData'), 'iris_secure_vault.json')
 
@@ -52,7 +50,6 @@ export async function startLiveCoding({ prompt, filename }: { prompt: string; fi
 
     const ai = new GoogleGenAI({ apiKey: geminiKey })
 
-    // Using stable gemini-2.5-flash for coding
     const response = await ai.models.generateContentStream({
       model: 'gemini-2.5-flash',
       contents: `You are an elite developer. Write the code for: "${prompt}". Output ONLY the raw code for the file ${filename}. Do NOT wrap it in markdown blockquotes (\`\`\` language formatting). Just raw code.`
@@ -60,7 +57,6 @@ export async function startLiveCoding({ prompt, filename }: { prompt: string; fi
 
     let fullCode = ''
 
-    // 3. Stream chunks down the IPC line to the React Monaco Editor
     for await (const chunk of response) {
       if (chunk.text) {
         fullCode += chunk.text
@@ -70,11 +66,9 @@ export async function startLiveCoding({ prompt, filename }: { prompt: string; fi
       }
     }
 
-    // Clean up any rogue markdown blockquotes just in case the AI hallucinates them
     let cleanCode = fullCode.replace(/^```[a-z]*\n?/, '').replace(/```$/, '')
     await fs.writeFile(filePath, cleanCode.trim(), 'utf-8')
 
-    // 4. Tell frontend we are done so it can enable the VS Code button
     if (mainWindow) {
       mainWindow.webContents.send('coding-complete', { filePath })
     }
