@@ -10,7 +10,6 @@ export default function LiveCodingWidget() {
   const [code, setCode] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
 
-  // Configure custom syntax highlighting theme
   useEffect(() => {
     if (monaco) {
       monaco.editor.defineTheme('iris-dark', {
@@ -23,7 +22,6 @@ export default function LiveCodingWidget() {
     }
   }, [monaco])
 
-  // Purely driven by Backend IPC commands
   useEffect(() => {
     if (!window.electron?.ipcRenderer) return
 
@@ -60,7 +58,6 @@ export default function LiveCodingWidget() {
   return (
     <div className="absolute inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-10">
       <div className="w-full max-w-4xl h-[70vh] flex flex-col bg-[#0a0a0a] border border-emerald-500/30 rounded-xl shadow-[0_0_50px_rgba(16,185,129,0.1)] overflow-hidden">
-        {/* ── TOP HUD BAR ── */}
         <div className="h-12 bg-black border-b border-white/5 flex items-center justify-between px-4">
           <div className="flex items-center gap-3">
             <Sparkles
@@ -88,7 +85,6 @@ export default function LiveCodingWidget() {
           </div>
         </div>
 
-        {/* ── MONACO EDITOR ── */}
         <div className="flex-1 relative pt-4 bg-[#050505]">
           <Editor
             height="100%"
