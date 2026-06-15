@@ -19,6 +19,7 @@ export async function buildAnimatedWebsite({ prompt }) {
         contextIsolation: true
       }
     })
+    
 
     let geminiKey = ''
     const secureConfigPath = path.join(app.getPath('userData'), 'iris_secure_vault.json')
