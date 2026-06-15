@@ -1,3 +1,5 @@
+import { BrowserWindow } from 'electron'
+
 export const fetchWeather = async (city: string) => {
   try {
     const geoRes = await fetch(
@@ -35,8 +37,13 @@ export const fetchWeather = async (city: string) => {
       condition: condition
     }
 
-    const event = new CustomEvent('show-weather', { detail: finalData })
-    window.dispatchEvent(event)
+    // THE FIX: Find your active window and broadcast the data down the IPC line
+    const mainWindow = BrowserWindow.getAllWindows()[0]
+    if (mainWindow) {
+      mainWindow.webContents.send('show-weather', finalData)
+    } else {
+      console.error('[Weather Backend Error]: No active window found to receive event.')
+    }
 
     return `The current weather in ${finalData.city} is ${finalData.temperature}°C with ${finalData.condition} conditions. Wind speed is ${finalData.windSpeed} km/h.`
   } catch (error: any) {
