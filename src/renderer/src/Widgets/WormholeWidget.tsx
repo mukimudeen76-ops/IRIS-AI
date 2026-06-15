@@ -31,7 +31,7 @@ export default function WormholeWidget() {
   if (!isVisible) return null
 
   return (
-    <div className="absolute inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-md animate-in fade-in duration-300 p-8">
+    <div className="absolute inset-0 z-9999 flex items-center justify-center bg-black/80 backdrop-blur-md animate-in fade-in duration-300 p-8">
       <div className="w-full max-w-3xl bg-[#050505] border border-emerald-500/30 rounded-2xl shadow-[0_0_80px_rgba(16,185,129,0.15)] overflow-hidden flex flex-col relative">
         <div className="h-14 bg-emerald-500/10 border-b border-emerald-500/20 flex items-center justify-between px-6">
           <div className="flex items-center gap-3">
