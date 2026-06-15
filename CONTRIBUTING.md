@@ -1,8 +1,8 @@
 # Contributing to IRIS
 
-Welcome to the Neural Forge. 👁️⚡
+Welcome to the IRIS development workspace. 👁️⚡
 
-IRIS is an ambitious, kernel-level OS agent, and building the future of human-computer interaction is a massive undertaking.
+IRIS is an advanced, voice-first desktop assistant designed to streamline human-computer interaction through automated desktop actions. Right now, this is a solo-developed project, which means your contributions are incredibly valuable—but review time is limited.
 
 **🚨 CRITICAL ACCESS NOTICE: Active Contribution Requires Sponsorship**
 Because the core orchestration, voice engine, and execution tools are heavily protected, **you must be an active sponsor at the $15/month (IRIS Insider) tier or higher to contribute to the codebase.** This grants you access to the private `iris-insiders` repository where the actual executable code lives. PRs submitted to the public UI shell without accompanying backend logic cannot be merged into the master release.
@@ -28,7 +28,7 @@ Please read this guide to ensure your Pull Requests (PRs) merge smoothly and kee
 1. **Verify Your Access** → Ensure you are actively subscribed to the $15/mo tier and have cloned the private `iris-insiders` repository.
 2. **Bugs & small fixes** → Open a PR directly in the private repository!
 3. **New features / architecture** → Start a GitHub Discussion or open an Issue first. Please don't spend 20 hours building a massive feature without checking if it aligns with the project roadmap.
-4. **Refactor-only PRs** → **Do not open a PR.** I am not accepting purely cosmetic refactors (e.g., changing linting rules, reorganizing folders) unless requested as part of a specific bug fix.
+4. **Refactor-only PRs** → **Do not open a PR.** Cosmetic refactors (e.g., changing linting rules, reorganizing folders) are not accepted unless requested as part of a specific bug fix.
 5. **Questions** → Open a Discussion on GitHub.
 
 ## 🛑 Before You PR
@@ -48,11 +48,11 @@ Please read this guide to ensure your Pull Requests (PRs) merge smoothly and kee
 
 ---
 
-## 🤖 AI/Vibe-Coded PRs Welcome!
+## 🤖 AI-Assisted PRs Welcome!
 
 Built this with Gemini, Claude, or Cursor? **Awesome—just mark it!**
 
-Since IRIS is an AI-first operating system, AI-assisted code is treated as a first-class citizen. I just want transparency so I know how to review it.
+Since IRIS is an AI-first desktop assistant, AI-assisted code is treated as a first-class citizen. Transparency is required so the implementation can be reviewed accurately.
 
 Please include in your PR description:
 
@@ -65,10 +65,10 @@ Please include in your PR description:
 
 As a solo dev, I am currently prioritizing:
 
-- **Engine Stability:** Hardening the `BidiGenerateContent` WebSocket connection for the multimodal live agent.
-- **BYOK Security:** Ensuring no edge cases leak keys from the local OS vault.
-- **Agentic Tools:** Expanding the RAG Oracle and Mobile Telekinesis (ADB) toolsets.
-- **Cross-Platform:** Preparing the build pipeline for macOS and Linux deployment.
+- **Engine Stability:** Hardening the `BidiGenerateContent` WebSocket connection for the multimodal live assistant layer.
+- **BYOK Security:** Ensuring no edge cases leak keys from the local secure vault.
+- **Agentic Tools:** Expanding the RAG Oracle and Mobile Automation (ADB) toolsets.
+- **Cross-Platform:** Preparing the build pipeline for macOS and Linux desktop deployment.
 
 Check the GitHub Issues for labels like `good first issue` or `help wanted`.
 
@@ -81,13 +81,13 @@ Being a maintainer is about consistent involvement—triaging issues, reviewing 
 If you've successfully merged a few PRs and want to step up, reach out via Instagram DM or open an issue titled `[Maintainer Application]`. We are looking for people skilled in:
 
 - Electron Security & IPC
-- Native OS Integration (Windows/macOS/Linux APIs)
+- Native Desktop Integration (Windows/macOS/Linux desktop APIs)
 - Vector Databases (LanceDB) & RAG pipelines
 - UI/UX Animation (GSAP, WebGL, Framer Motion)
 
 ## 🛡️ Report a Vulnerability
 
-Because IRIS handles direct OS-level execution and local vault decryption, security is the highest priority.
+Because IRIS handles direct system-level execution and local vault decryption, security is the highest priority.
 
 If you find a vulnerability that allows for Remote Code Execution (RCE), key leakage, or IPC bridge bypassing, **DO NOT open a public issue.** Please report it directly via email to: **irisaidevop@gmail.com**
 
