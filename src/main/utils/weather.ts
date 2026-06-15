@@ -37,7 +37,6 @@ export const fetchWeather = async (city: string) => {
       condition: condition
     }
 
-    // THE FIX: Find your active window and broadcast the data down the IPC line
     const mainWindow = BrowserWindow.getAllWindows()[0]
     if (mainWindow) {
       mainWindow.webContents.send('show-weather', finalData)
