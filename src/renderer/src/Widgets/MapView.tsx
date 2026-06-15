@@ -4,7 +4,6 @@ import { RiMapPin2Fill, RiCloseLine, RiRouteFill, RiTimeLine } from 'react-icons
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
-// Fix default Leaflet icon paths in Vite/React
 import icon from 'leaflet/dist/images/marker-icon.png'
 import iconShadow from 'leaflet/dist/images/marker-shadow.png'
 
@@ -16,7 +15,6 @@ const DefaultIcon = L.icon({
 })
 L.Marker.prototype.options.icon = DefaultIcon
 
-// Custom sleek premium markers that pop on a colorful map
 const PremiumIcon = (color: string) =>
   L.divIcon({
     className: 'custom-premium-marker',
@@ -50,7 +48,6 @@ export default function LeafletMapWidget() {
   const mapInstanceRef = useRef<L.Map | null>(null)
   const layersRef = useRef<L.Layer[]>([])
 
-  // ── 1. Listen for AI Backend Commands (NO HARDCODED ROUTES) ──
   useEffect(() => {
     if (!window.electron?.ipcRenderer) return
 
@@ -71,7 +68,6 @@ export default function LeafletMapWidget() {
     }
   }, [])
 
-  // ── 2. Lifecycle Effect (Mounting & Colorful Tiles) ──
   useEffect(() => {
     const container = mapContainerRef.current
     if (!mapData || !container) return
@@ -80,13 +76,11 @@ export default function LeafletMapWidget() {
       ;(container as any)._leaflet_id = null
     }
 
-    // Set initial anchor to center of India to prevent crash before flying
     const map = L.map(container, {
       zoomControl: false,
       attributionControl: false
     }).setView([20.5937, 78.9629], 5)
 
-    // THE FIX: High-fidelity, full-color Google Street Map tiles. No more black void.
     L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
       maxZoom: 20
     }).addTo(map)
@@ -104,7 +98,6 @@ export default function LeafletMapWidget() {
     }
   }, [mapData ? true : false])
 
-  // ── 3. Data Update Effect (Drawing Pins & Routes) ──
   useEffect(() => {
     const map = mapInstanceRef.current
     if (!map || !mapData) return
@@ -116,7 +109,6 @@ export default function LeafletMapWidget() {
       if (mapData.mode === 'point' && mapData.lat && mapData.lng) {
         map.flyTo([mapData.lat, mapData.lng], 14, { duration: 1.5 })
 
-        // Deep Blue marker for single locations
         const marker = L.marker([mapData.lat, mapData.lng], { icon: PremiumIcon('#2563eb') })
           .bindPopup(
             `<strong style="font-family: sans-serif; font-size: 14px;">${mapData.name || 'Target Location'}</strong>`
@@ -125,7 +117,6 @@ export default function LeafletMapWidget() {
 
         layersRef.current.push(marker)
       } else if (mapData.mode === 'route' && mapData.start && mapData.end && mapData.path) {
-        // Blue for Origin, Red for Destination
         const startMarker = L.marker(mapData.start, { icon: PremiumIcon('#2563eb') })
           .bindPopup(`Origin: ${mapData.info?.origin || 'Start'}`)
           .addTo(map)
@@ -134,7 +125,6 @@ export default function LeafletMapWidget() {
           .bindPopup(`Destination: ${mapData.info?.destination || 'End'}`)
           .addTo(map)
 
-        // Thick, highly visible Navigation Blue route line
         const routeLine = L.polyline(mapData.path, {
           color: '#2563eb',
           weight: 6,
