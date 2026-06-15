@@ -114,7 +114,7 @@ export default function LeafletMapWidget() {
   return (
     <AnimatePresence>
       {mapData && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-xl p-8 font-sans">
+        <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black/80 backdrop-blur-xl p-8 font-sans">
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -123,7 +123,7 @@ export default function LeafletMapWidget() {
             className="relative w-full h-full max-w-6xl max-h-[85vh] bg-zinc-950 border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col"
           >
             {/* ── TOP HUD BAR ── */}
-            <div className="absolute top-6 left-6 right-6 z-[1000] flex justify-between items-start pointer-events-none">
+            <div className="absolute top-6 left-6 right-6 z-1000 flex justify-between items-start pointer-events-none">
               <div className="bg-black/80 backdrop-blur-md border border-white/10 px-5 py-3 rounded-2xl pointer-events-auto shadow-xl flex items-center gap-4">
                 {mapData.mode === 'route' ? (
                   <>
