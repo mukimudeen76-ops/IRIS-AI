@@ -6,6 +6,8 @@
 
 **Build faster. Automate workflows. Control your desktop with Voice Commands.**
 
+---
+
 <div style="display: flex; justify-center; gap: 10px; margin-bottom: 20px;">
 
   <a href="https://github.com/IRISX-AI/IRIS-AI/stargazers">
