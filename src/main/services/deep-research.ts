@@ -100,7 +100,8 @@ export async function executeDeepResearch({ query }: { query: string }) {
       })
     }
 
-    return `Deep research completed. Summary provided to user interface.`
+    // 🚨 THE FIX: Return the actual data to the LLM so it can read it and talk to you about it.
+    return `Deep research completed successfully. Here is the synthesized data to discuss with the user: \n\n${extractedSummary}`
   } catch (error: any) {
     console.log(error)
     if (mainWindow) {
