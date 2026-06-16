@@ -93,6 +93,7 @@ const IRIS = ({
               className={`text-[9px] font-mono tracking-widest uppercase mt-1 ${isConnected ? 'text-emerald-500' : 'text-red-500'}`}
             >
               {isConnected ? 'Connected' : 'Offline'}
+              
             </span>
           </div>
           <div
