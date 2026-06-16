@@ -1,6 +1,5 @@
 import { app } from 'electron'
 import { exec } from 'child_process'
-import util from 'util'
 import fs from 'fs/promises'
 import path from 'path'
 import { promisify } from 'util'
