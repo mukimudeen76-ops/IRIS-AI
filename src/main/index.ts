@@ -230,7 +230,7 @@ app.whenReady().then(() => {
         groq: groqEncrypted,
         gemini: geminiEncrypted,
         hf: hfEncrypted,
-        tavily: tavilyEncrypted // FIXED TYPO HERE
+        tavily: tavilyEncrypted
       }
 
       fs.writeFileSync(secureConfigPath, JSON.stringify(secureData))

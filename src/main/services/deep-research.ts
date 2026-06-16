@@ -27,7 +27,6 @@ export async function executeDeepResearch({ query }: { query: string }) {
     let groqKey = ''
     const secureConfigPath = path.join(app.getPath('userData'), 'iris_secure_vault.json')
 
-    // 2. Extract keys securely from the local OS vault
     if (fsSync.existsSync(secureConfigPath)) {
       try {
         const data = JSON.parse(fsSync.readFileSync(secureConfigPath, 'utf8'))
