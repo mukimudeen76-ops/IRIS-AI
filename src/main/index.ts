@@ -26,6 +26,7 @@ import { getMemory } from './hooks/iris-memory'
 import { getAdbHistory } from './mobile/adb-manager'
 import registerSystemHandlers from './lib/system'
 import registerFrontendIPC from './handler/ui-ipc-bridge'
+import { executeDeepResearch } from './services/deep-research'
 
 app.commandLine.appendSwitch('use-fake-ui-for-media-stream')
 
@@ -259,7 +260,7 @@ app.whenReady().then(() => {
         if (data.groq) groqKey = Buffer.from(data.groq, 'base64').toString('utf8')
         if (data.gemini) geminiKey = Buffer.from(data.gemini, 'base64').toString('utf8')
         if (data.hf) hfKey = Buffer.from(data.hf, 'base64').toString('utf8')
-        if (data.tavily) tavilyKey = Buffer.from(data.tavily, 'base64').toString('utf8') 
+        if (data.tavily) tavilyKey = Buffer.from(data.tavily, 'base64').toString('utf8')
       }
 
       return { groqKey, geminiKey, hfKey, tavilyKey }
@@ -324,6 +325,9 @@ app.whenReady().then(() => {
   })
 
   registerSystemHandlers(ipcMain)
+  ipcMain.handle('trigger-deep-research', async (event, { query }) => {
+    return await executeDeepResearch({ query })
+  })
 
   registerLockSystem()
   registerSecurityVault()
