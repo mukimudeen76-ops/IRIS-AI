@@ -193,7 +193,7 @@ const GalleryView = () => {
                     setDirection(0)
                     setSelectedMedia(media)
                   }}
-                  className="group relative aspect-square md:aspect-[4/5] bg-neutral-900 rounded-2xl border border-white/5 overflow-hidden hover:border-emerald-500/50 hover:shadow-lg transition-all duration-300 cursor-pointer"
+                  className="group relative aspect-square md:aspect-4/5 bg-neutral-900 rounded-2xl border border-white/5 overflow-hidden hover:border-emerald-500/50 hover:shadow-lg transition-all duration-300 cursor-pointer"
                 >
                   {/* Thumbnail Rendering */}
                   {isVideo ? (
@@ -285,7 +285,7 @@ const GalleryView = () => {
             animate={{ opacity: 1, backdropFilter: 'blur(20px)' }}
             exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[9999] bg-black/90 flex items-center justify-center"
+            className="fixed inset-0 z-9999 bg-black/90 flex items-center justify-center"
           >
             {/* Top Bar */}
             <div className="absolute top-0 left-0 right-0 p-6 flex justify-between items-center z-50">
