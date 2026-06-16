@@ -476,37 +476,29 @@ export async function executeCameraControl({
         ? 'android.media.action.VIDEO_CAMERA'
         : 'android.media.action.STILL_IMAGE_CAMERA'
 
-    // This payload brute-forces Google, Samsung, Xiaomi, and Generic Android APIs simultaneously
     const extras = isFront
       ? `--ei android.intent.extras.CAMERA_FACING 1 --ez android.intent.extra.USE_FRONT_CAMERA true --ez frontcamera true --ez com.google.assistant.extra.USE_FRONT_CAMERA true --ei camera.extras.camera.facing 1`
       : `--ei android.intent.extras.CAMERA_FACING 0 --ez android.intent.extra.USE_FRONT_CAMERA false --ez frontcamera false --ei camera.extras.camera.facing 0`
 
-    // Launch Camera App (Now guaranteed to be a Cold Boot)
     await execAsync(`adb ${target} shell am start -a ${intentAction} ${extras}`)
 
-    // Wait for the UI to fully render (Cold boots take longer)
     await new Promise((r) => setTimeout(r, 4500))
 
-    // 6. 🚨 CRITICAL FIX: ACCURATE RECORDING TIMERS
     if (mode === 'video') {
       await execAsync(`adb ${target} shell input keyevent KEYCODE_CAMERA`) // START RECORDING
 
-      // The UI takes ~1.5 seconds to actually start the timer after the button is pressed
       await new Promise((r) => setTimeout(r, 1500))
 
-      // Wait EXACT requested duration
       await new Promise((r) => setTimeout(r, duration * 1000))
 
       await execAsync(`adb ${target} shell input keyevent KEYCODE_CAMERA`) // STOP RECORDING
 
-      // Wait for MP4 muxing/encoding to finish saving to disk
       await new Promise((r) => setTimeout(r, 4000))
     } else {
       await execAsync(`adb ${target} shell input keyevent KEYCODE_CAMERA`) // SNAP PHOTO
       await new Promise((r) => setTimeout(r, 2500)) // HDR Processing delay
     }
 
-    // 7. POLLING LOOP: Wait for the OS to verify the NEW media file is written
     let cleanFileName = ''
     let attempts = 0
     while (attempts < 10) {
