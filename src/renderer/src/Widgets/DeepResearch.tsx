@@ -104,7 +104,7 @@ export default function ResearchWidget() {
           animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
           exit={{ opacity: 0, scale: 0.95, filter: 'blur(10px)' }}
           transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-          className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] min-h-[300px] bg-black/60 backdrop-blur-3xl border border-white/10 rounded-2xl p-8 shadow-[0_0_80px_rgba(0,0,0,0.9)] z-[9999] text-white font-sans overflow-hidden flex flex-col justify-center"
+          className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-175 min-h-75 bg-black/60 backdrop-blur-3xl border border-white/10 rounded-2xl p-8 shadow-[0_0_80px_rgba(0,0,0,0.9)] z-9999 text-white font-sans overflow-hidden flex flex-col justify-center"
         >
           <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4 relative z-10">
             <div className="flex items-center gap-3">
@@ -157,7 +157,7 @@ export default function ResearchWidget() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.4, ease: 'easeOut' }}
-                className="mt-4 p-4 bg-emerald-950/20 border border-emerald-500/20 rounded-lg relative z-10 max-h-[150px] overflow-y-auto custom-scrollbar"
+                className="mt-4 p-4 bg-emerald-950/20 border border-emerald-500/20 rounded-lg relative z-10 max-h-37.5 overflow-y-auto custom-scrollbar"
               >
                 <p className="text-[10px] text-emerald-400/80 uppercase tracking-widest mb-2 font-bold">
                   Data Extracted
