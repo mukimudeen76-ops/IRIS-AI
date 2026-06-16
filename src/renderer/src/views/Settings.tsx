@@ -61,7 +61,7 @@ export default function SettingsView({ isSystemActive }: SettingsProps) {
   const [geminiKey, setGeminiKey] = useState('')
   const [groqKey, setGroqKey] = useState('')
   const [hfKey, setHfKey] = useState('')
-  const [tailvyKey, setTailvyKey] = useState('')
+  const [tavilyKey, settavilyKey] = useState('')
 
   const [isSecurityUnlocked, setIsSecurityUnlocked] = useState(false)
   const [authPin, setAuthPin] = useState('')
@@ -90,7 +90,7 @@ export default function SettingsView({ isSystemActive }: SettingsProps) {
         setGeminiKey(keys.geminiKey || '')
         setGroqKey(keys.groqKey || '')
         setHfKey(keys.hfKey || '')
-        setTailvyKey(keys.tailvyKey || '')
+        settavilyKey(keys.tavilyKey || '')
       }
     })
 
@@ -140,11 +140,9 @@ export default function SettingsView({ isSystemActive }: SettingsProps) {
           groqKey,
           geminiKey,
           hfKey,
-          tailvyKey
+          tavilyKey
         })
-        alert(
-          'API Keys securely encrypted and saved to Vault. You can now Use this!.'
-        )
+        alert('API Keys securely encrypted and saved to Vault. You can now Use this!.')
       } catch (e) {
         alert('Failed to save keys to the secure vault.')
       }
@@ -470,8 +468,8 @@ export default function SettingsView({ isSystemActive }: SettingsProps) {
                       <div className={inputContainerClass}>
                         <input
                           type="password"
-                          value={tailvyKey}
-                          onChange={(e) => setTailvyKey(e.target.value)}
+                          value={tavilyKey}
+                          onChange={(e) => settavilyKey(e.target.value)}
                           placeholder="tvly-..."
                           className="bg-transparent border-none outline-none text-base text-white w-full placeholder:text-zinc-600"
                         />

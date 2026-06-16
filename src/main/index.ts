@@ -26,6 +26,7 @@ import { getMemory } from './hooks/iris-memory'
 import { getAdbHistory } from './mobile/adb-manager'
 import registerSystemHandlers from './lib/system'
 import registerFrontendIPC from './handler/ui-ipc-bridge'
+import { executeDeepResearch } from './services/deep-research'
 
 app.commandLine.appendSwitch('use-fake-ui-for-media-stream')
 
@@ -210,27 +211,27 @@ app.whenReady().then(() => {
   ipcMain.removeHandler('secure-get-keys')
   ipcMain.removeHandler('check-keys-exist')
 
-  ipcMain.handle('secure-save-keys', async (_, { groqKey, geminiKey, hfKey, tailvyKey }) => {
+  ipcMain.handle('secure-save-keys', async (_, { groqKey, geminiKey, hfKey, tavilyKey }) => {
     try {
-      let groqEncrypted, geminiEncrypted, hfEncrypted, tailvyEncrypted
+      let groqEncrypted, geminiEncrypted, hfEncrypted, tavilyEncrypted
 
       if (safeStorage.isEncryptionAvailable()) {
         groqEncrypted = groqKey ? safeStorage.encryptString(groqKey).toString('base64') : ''
         geminiEncrypted = geminiKey ? safeStorage.encryptString(geminiKey).toString('base64') : ''
         hfEncrypted = hfKey ? safeStorage.encryptString(hfKey).toString('base64') : ''
-        tailvyEncrypted = tailvyKey ? safeStorage.encryptString(tailvyKey).toString('base64') : ''
+        tavilyEncrypted = tavilyKey ? safeStorage.encryptString(tavilyKey).toString('base64') : ''
       } else {
         groqEncrypted = groqKey ? Buffer.from(groqKey).toString('base64') : ''
         geminiEncrypted = geminiKey ? Buffer.from(geminiKey).toString('base64') : ''
         hfEncrypted = hfKey ? Buffer.from(hfKey).toString('base64') : ''
-        tailvyEncrypted = tailvyKey ? Buffer.from(tailvyKey).toString('base64') : ''
+        tavilyEncrypted = tavilyKey ? Buffer.from(tavilyKey).toString('base64') : ''
       }
 
       const secureData = {
         groq: groqEncrypted,
         gemini: geminiEncrypted,
         hf: hfEncrypted,
-        tailvy: tailvyEncrypted
+        tavily: tavilyEncrypted
       }
 
       fs.writeFileSync(secureConfigPath, JSON.stringify(secureData))
@@ -248,21 +249,21 @@ app.whenReady().then(() => {
       let groqKey = '',
         geminiKey = '',
         hfKey = '',
-        tailvyKey = ''
+        tavilyKey = ''
 
       if (safeStorage.isEncryptionAvailable()) {
         if (data.groq) groqKey = safeStorage.decryptString(Buffer.from(data.groq, 'base64'))
         if (data.gemini) geminiKey = safeStorage.decryptString(Buffer.from(data.gemini, 'base64'))
         if (data.hf) hfKey = safeStorage.decryptString(Buffer.from(data.hf, 'base64'))
-        if (data.tailvy) tailvyKey = safeStorage.decryptString(Buffer.from(data.tailvy, 'base64'))
+        if (data.tavily) tavilyKey = safeStorage.decryptString(Buffer.from(data.tavily, 'base64'))
       } else {
         if (data.groq) groqKey = Buffer.from(data.groq, 'base64').toString('utf8')
         if (data.gemini) geminiKey = Buffer.from(data.gemini, 'base64').toString('utf8')
         if (data.hf) hfKey = Buffer.from(data.hf, 'base64').toString('utf8')
-        if (data.tailvy) tailvyKey = Buffer.from(data.tailvy, 'base64').toString('utf8')
+        if (data.tavily) tavilyKey = Buffer.from(data.tavily, 'base64').toString('utf8')
       }
 
-      return { groqKey, geminiKey, hfKey, tailvyKey }
+      return { groqKey, geminiKey, hfKey, tavilyKey }
     } catch (err) {
       console.error('[Vault] Read Error:', err)
       return null
@@ -324,6 +325,9 @@ app.whenReady().then(() => {
   })
 
   registerSystemHandlers(ipcMain)
+  ipcMain.handle('trigger-deep-research', async (event, { query }) => {
+    return await executeDeepResearch({ query })
+  })
 
   registerLockSystem()
   registerSecurityVault()

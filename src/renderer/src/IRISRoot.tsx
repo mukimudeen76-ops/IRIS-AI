@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import MiniOverlay from './components/MiniOverlay'
-import IRIS from './UI/IRIS'
+import IRIS from './UI/IRISB'
 import TerminalOverlay from './components/TerminalOverlay'
 import LeafletMapWidget from './Widgets/MapView'
 import ImageWidget from './Widgets/ImageWidget'

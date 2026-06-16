@@ -22,7 +22,7 @@ function getHealthColor(value: number, type: 'cpu' | 'ram' | 'temp') {
   const lightness = 50
   const mainColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`
   const darkColor = `hsl(${hue}, ${saturation}%, 15%)`
-  const linear = `linear-linear(90deg, ${darkColor}, ${mainColor})`
+  const linear = `linear-gradient(90deg, ${darkColor}, ${mainColor})`
   const glow = mainColor
   return { linear, glow }
 }
@@ -31,16 +31,10 @@ function PulseIndicator({ active, color = '#00ff88' }: { active: boolean; color?
   return (
     <span className="relative flex h-2.5 w-2.5">
       {active && (
-        <>
-          <span
-            className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-50"
-            style={{ background: color }}
-          />
-          <span
-            className="absolute inline-flex h-full w-full animate-pulse rounded-full"
-            style={{ background: color, opacity: 0.3 }}
-          />
-        </>
+        <span
+          className="absolute inline-flex h-full w-full animate-pulse rounded-full"
+          style={{ background: color, opacity: 0.5 }}
+        />
       )}
       <span
         className="relative inline-flex h-2.5 w-2.5 rounded-full shadow-lg"
@@ -101,7 +95,7 @@ function PremiumGlassPanel({
 
   return (
     <div
-      className={`group relative overflow-hidden rounded-2xl bg-linear-to-br ${config.bg} backdrop-blur-3xl border ${config.border} shadow-xl transition-all duration-300 ${
+      className={`group relative overflow-hidden rounded-2xl bg-linear-to-br ${config.bg} backdrop-blur-xl border ${config.border} shadow-xl transition-all duration-300 ${
         glow ? 'hover:shadow-2xl' : ''
       } ${className}`}
       style={
@@ -155,11 +149,9 @@ function NeonProgressBar({
         />
 
         <div
-          className="absolute inset-0 rounded-full opacity-40"
+          className="absolute inset-0 rounded-full opacity-20"
           style={{
-            background: `linear-linear(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%)`,
-            animation: 'shimmer 3s infinite',
-            backgroundSize: '200% 100%'
+            background: `linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%)`
           }}
         />
       </div>
@@ -284,7 +276,7 @@ export default function LeftPanelsPremium({
 
         intervalId = setInterval(() => {
           if (videoRef.current && canvasRef.current && (window as any).iris?.sendVisionFrame) {
-            const ctx = canvasRef.current.getContext('2d')
+            const ctx = canvasRef.current.getContext('2d', { willReadFrequently: true })
             ctx?.drawImage(videoRef.current, 0, 0, 640, 480)
 
             const base64Full = canvasRef.current.toDataURL('image/jpeg', 0.8)
@@ -380,21 +372,6 @@ export default function LeftPanelsPremium({
 
   return (
     <div className="flex h-full flex-col gap-4 p-0">
-      <style>{`
-        @keyframes shimmer {
-          0% { background-position: -200% 0; }
-          100% { background-position: 200% 0; }
-        }
-        @keyframes scanline {
-          0%, 100% { top: 0%; }
-          50% { top: 100%; }
-        }
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-4px); }
-        }
-      `}</style>
-
       <PremiumGlassPanel accent="green" glow>
         <div className="p-4 flex flex-col h-full gap-3">
           {/* Header */}
@@ -491,13 +468,6 @@ export default function LeftPanelsPremium({
                   />
                 ))}
               </>
-            )}
-
-            {isActive && (
-              <div
-                className="pointer-events-none absolute left-0 right-0 h-px bg-linear-to-r from-transparent via-[#00ff88]/30 to-transparent z-30"
-                style={{ animation: 'scanline 3s ease-in-out infinite' }}
-              />
             )}
           </div>
         </div>
