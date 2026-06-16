@@ -2,7 +2,6 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { useMemo, useRef, useCallback } from 'react'
 import * as THREE from 'three'
 
-// ─── Static constants (never recreated) ───
 const IDLE_COLOR = new THREE.Color('#39ff14')
 const ACTIVE_COLOR = new THREE.Color('#00ffff')
 const RING_COLOR = new THREE.Color('#39ff14')
@@ -11,13 +10,10 @@ const _blendColor = new THREE.Color()
 const _ringColor = new THREE.Color()
 const _scaleVec = new THREE.Vector3()
 
-// ─── Optimized single particle shell ───
-// Replaced 3 shells (5600 particles) with 1 shell (900 particles)
-// Visual quality maintained via smarter animation
 function ParticleShell({ isConnected, isSpeaking }: { isConnected: boolean; isSpeaking: boolean }) {
   const ref = useRef<THREE.Points>(null)
   const volRef = useRef(0)
-  const COUNT = 900 // Down from 5600 total — 84% fewer particles
+  const COUNT = 900
 
   const { positions, original, seeds } = useMemo(() => {
     const pos = new Float32Array(COUNT * 3)
@@ -25,7 +21,6 @@ function ParticleShell({ isConnected, isSpeaking }: { isConnected: boolean; isSp
     const s = new Float32Array(COUNT * 2) // [phase, weight]
 
     for (let i = 0; i < COUNT; i++) {
-      // Fibonacci sphere for even distribution (no rejection sampling loop)
       const phi = Math.acos(1 - (2 * (i + 0.5)) / COUNT)
       const theta = Math.PI * (1 + Math.sqrt(5)) * i
       const r = 1.3
@@ -53,33 +48,27 @@ function ParticleShell({ isConnected, isSpeaking }: { isConnected: boolean; isSp
     const geo = pts.geometry
     const mat = pts.material as THREE.PointsMaterial
 
-    // Slow passive rotation
     pts.rotation.y += delta * 0.07
     pts.rotation.z += delta * 0.03
 
     const t = performance.now() * 0.001
 
-    // Volume simulation
     let targetVol = 0
     if (isSpeaking) {
-      // Organic speaking pulse — two freq mix feels more alive
       const pulse = Math.abs(Math.sin(t * 9) * 0.6 + Math.sin(t * 4.3) * 0.4)
       targetVol = pulse * 0.6 + Math.random() * 0.1
     } else if (isConnected) {
       targetVol = Math.abs(Math.sin(t * 1.6)) * 0.035
     }
-    // Smooth lerp — slower attack on speak, faster release on idle
     const lerpSpeed = isSpeaking ? 0.14 : 0.09
     volRef.current += (targetVol - volRef.current) * lerpSpeed
     const vol = volRef.current
 
-    // Color + opacity
     _blendColor.lerpColors(IDLE_COLOR, ACTIVE_COLOR, Math.min(vol * 2, 1))
     mat.color.copy(_blendColor)
     const targetOp = isConnected ? 0.65 + vol * 0.3 : 0.2
     mat.opacity += (targetOp - mat.opacity) * 0.07
 
-    // Particle displacement — only compute if vol > threshold
     if (vol > 0.002) {
       const posArr = geo.attributes.position.array as Float32Array
       for (let i = 0; i < COUNT; i++) {
@@ -87,13 +76,11 @@ function ParticleShell({ isConnected, isSpeaking }: { isConnected: boolean; isSp
         const phase = seeds[i * 2]
         const weight = seeds[i * 2 + 1]
 
-        // Radial wave displacement only (no sqrt per frame — use stored normals)
         const wave = Math.sin(t * 7 + phase) * vol * weight * 0.2
 
         const ox = original[ix]
         const oy = original[ix + 1]
         const oz = original[ix + 2]
-        // Precomputed 1/r (radius is fixed at 1.3, so reciprocal is constant)
         const invR = 0.7692 // 1 / 1.3
 
         posArr[ix] = ox + ox * invR * wave
@@ -127,8 +114,6 @@ function ParticleShell({ isConnected, isSpeaking }: { isConnected: boolean; isSp
   )
 }
 
-// ─── Optimized orbital ring ───
-// Reduced tube segments from 96 → 48, removed per-frame Color allocation
 function OrbitalRing({
   radius,
   tube,
@@ -165,7 +150,6 @@ function OrbitalRing({
     volRef.current += (targetVol - volRef.current) * 0.1
     const vol = volRef.current
 
-    // Reuse static color object (no allocation)
     _ringColor.lerpColors(RING_COLOR, RING_GLOW, vol)
     matRef.current.color.copy(_ringColor)
 
@@ -175,7 +159,6 @@ function OrbitalRing({
 
   return (
     <mesh ref={ref} rotation={[tilt, 0, 0]}>
-      {/* Reduced radial segments: 96 → 48, tube segments: 3 → 2 */}
       <torusGeometry args={[radius, tube, 2, 48]} />
       <meshBasicMaterial
         ref={matRef}
@@ -189,7 +172,6 @@ function OrbitalRing({
   )
 }
 
-// ─── Core orb group ───
 function AIOrb({ isConnected, isSpeaking }: { isConnected: boolean; isSpeaking: boolean }) {
   const groupRef = useRef<THREE.Group>(null)
 
@@ -197,7 +179,6 @@ function AIOrb({ isConnected, isSpeaking }: { isConnected: boolean; isSpeaking: 
     if (!groupRef.current) return
 
     const targetScale = !isConnected ? 0.44 : isSpeaking ? 0.72 : 0.62
-    // Reuse static vector (no allocation per frame)
     _scaleVec.set(targetScale, targetScale, targetScale)
     groupRef.current.scale.lerp(_scaleVec, delta * 3)
     groupRef.current.rotation.y += delta * 0.03
@@ -231,7 +212,6 @@ function AIOrb({ isConnected, isSpeaking }: { isConnected: boolean; isSpeaking: 
   )
 }
 
-// ─── Main export ───
 export default function AICore({
   isConnected = false,
   isSpeaking = false
