@@ -145,7 +145,6 @@ const GalleryView = () => {
 
   return (
     <div className="flex-1 bg-neutral-950 h-full p-8 md:p-10 animate-in fade-in duration-500 flex flex-col overflow-hidden selection:bg-emerald-500/30 text-white font-sans">
-      {/* Header */}
       <div className="flex items-end justify-between pb-6 border-b border-white/5 mb-8 shrink-0">
         <div className="flex items-center gap-4">
           <div className="p-3 bg-neutral-900 rounded-2xl border border-neutral-800 shadow-md">
@@ -166,7 +165,6 @@ const GalleryView = () => {
         </div>
       </div>
 
-      {/* Grid Layout */}
       <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 min-h-0">
         {allMedia.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-neutral-600 gap-5">
@@ -194,7 +192,6 @@ const GalleryView = () => {
                   }}
                   className="group relative aspect-square md:aspect-4/5 bg-neutral-900 rounded-2xl border border-white/5 overflow-hidden hover:border-emerald-500/50 hover:shadow-lg transition-all duration-300 cursor-pointer"
                 >
-                  {/* Thumbnail Rendering */}
                   {isVideo ? (
                     <video
                       src={media.url}
@@ -216,7 +213,6 @@ const GalleryView = () => {
                     />
                   )}
 
-                  {/* Fallback Error */}
                   <div className="hidden absolute inset-0 items-center justify-center flex-col gap-3 bg-neutral-950">
                     <RiFileWarningLine className="text-red-500/40" size={32} />
                     <span className="text-[10px] font-bold tracking-widest text-neutral-500">
@@ -224,7 +220,6 @@ const GalleryView = () => {
                     </span>
                   </div>
 
-                  {/* Video Badge */}
                   {isVideo && (
                     <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-md border border-white/10 flex items-center gap-1.5 z-10">
                       <RiVideoLine size={12} className="text-emerald-400" />
@@ -234,7 +229,6 @@ const GalleryView = () => {
                     </div>
                   )}
 
-                  {/* Info Overlay */}
                   <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-4">
                     <div className="mb-3">
                       <p className="text-xs text-white font-bold mb-1 truncate">
@@ -263,7 +257,6 @@ const GalleryView = () => {
                     </div>
                   </div>
 
-                  {/* Play Icon */}
                   {isVideo && (
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
                       <RiPlayCircleLine size={48} className="text-white drop-shadow-md" />
@@ -276,7 +269,6 @@ const GalleryView = () => {
         )}
       </div>
 
-      {/* Expanded Viewer Overlay */}
       <AnimatePresence>
         {selectedMedia && (
           <motion.div
@@ -310,7 +302,6 @@ const GalleryView = () => {
               </button>
             </div>
 
-            {/* Arrow Nav */}
             <div
               className="absolute left-0 top-0 bottom-0 w-32 z-40 flex items-center justify-start pl-6 group cursor-pointer hover:bg-linear-to-r from-black/40 to-transparent"
               onClick={() => navigateMedia(-1)}
@@ -329,7 +320,6 @@ const GalleryView = () => {
               </div>
             </div>
 
-            {/* Media Canvas */}
             <div className="relative w-full h-full flex flex-col items-center justify-center pt-20 pb-28 px-32">
               <AnimatePresence initial={false} custom={direction} mode="wait">
                 <motion.div
@@ -359,7 +349,6 @@ const GalleryView = () => {
               </AnimatePresence>
             </div>
 
-            {/* Bottom Actions */}
             <div className="absolute bottom-8 z-50 flex gap-3 p-2 bg-neutral-900/80 backdrop-blur-md border border-white/10 rounded-xl">
               <button
                 onClick={(e) => openLocation(selectedMedia.path, e)}
