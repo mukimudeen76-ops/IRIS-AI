@@ -98,7 +98,6 @@ async function getIpFallbackLocation() {
   return null
 }
 
-// ─── EXPORTED CORE FUNCTION ───
 export async function getLiveLocation() {
   let tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown'
 
