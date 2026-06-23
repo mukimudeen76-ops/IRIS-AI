@@ -312,7 +312,6 @@ export default function LeftPanelsPremium({
     }
   }, [visionMode, isActive])
 
-  // Stats polling logic (runs once every 3s, negligible impact)
   useEffect(() => {
     if (!isActive) return
 
