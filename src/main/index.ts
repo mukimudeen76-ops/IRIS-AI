@@ -137,13 +137,6 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  app.on('open-url', (event, url) => {
-    event.preventDefault()
-    if (mainWindow && url.startsWith('iris://')) {
-      mainWindow.webContents.send('oauth-callback', url)
-    }
-  })
-
   createWindow()
 
   app.on('activate', function () {
