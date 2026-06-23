@@ -17,7 +17,6 @@ const GalleryView = lazy(() => import('../views/Gallery'))
 interface IrisProps {
   isConnected: boolean
   toggleConnection: () => void
-  systemStatus: Status
   isSpeaking: boolean
   isMuted: boolean
   handleMicToggle: () => void
