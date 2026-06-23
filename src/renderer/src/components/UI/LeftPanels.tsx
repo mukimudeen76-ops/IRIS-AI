@@ -191,8 +191,6 @@ function BootSequence({ isActive, osType }: { isActive: boolean; osType: string 
 
     if (bootPhase) {
       const logs = [
-        '› KERNEL_INIT ........... OK',
-        '› MOUNT_VFS ............. OK',
         '› HW_TELEM_LINK ..... SYNC',
         '› OPTICS_DRIVER ... READY',
         '› SYSTEM_READY ........ ✓'
@@ -204,7 +202,7 @@ function BootSequence({ isActive, osType }: { isActive: boolean; osType: string 
           i++
         } else {
           clearInterval(bootInterval)
-          setTimeout(() => setBootPhase(false), 800)
+          setTimeout(() => setBootPhase(false), 100)
         }
       }, 100)
       return () => clearInterval(bootInterval)
