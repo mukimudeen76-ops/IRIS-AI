@@ -68,10 +68,6 @@ export default function SettingsView({ isSystemActive }: SettingsProps) {
         settavilyKey(keys.tavilyKey || '')
       }
     })
-
-    window.electron.ipcRenderer
-      .invoke('check-vault-status')
-      .then((res: any) => setFaceCount(res?.faceCount || 0))
   }, [])
 
   const checkForUpdates = () => window.electron.ipcRenderer.invoke('check-for-updates')
