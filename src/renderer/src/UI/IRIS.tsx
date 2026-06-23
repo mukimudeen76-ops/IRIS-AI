@@ -101,7 +101,6 @@ const IRIS = ({
             <DashboardView
               isConnected={isConnected}
               toggleConnection={toggleConnection}
-              systemStatus={systemStatus}
               isSpeaking={isSpeaking}
               isMuted={isMuted}
               handleMicToggle={handleMicToggle}
