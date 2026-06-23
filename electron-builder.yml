@@ -23,7 +23,7 @@ asarUnpack:
 
 win:
   executableName: iris-ai
-  icon: build/icon.ico
+  icon: build/icon.png
   target:
     - target: nsis
 
@@ -31,9 +31,6 @@ nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
   uninstallDisplayName: ${productName}
-  installerIcon: build/icon.ico
-  uninstallerIcon: build/icon.ico
-  installerHeaderIcon: build/icon.ico
   oneClick: false
   allowToChangeInstallationDirectory: true
   createDesktopShortcut: always
