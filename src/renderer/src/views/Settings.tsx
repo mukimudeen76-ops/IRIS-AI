@@ -41,7 +41,6 @@ function GlassPanel({
   )
 }
 
-
 export default function SettingsView({ isSystemActive }: SettingsProps) {
   const [activeTab, setActiveTab] = useState<TabType>('updates')
 
@@ -55,10 +54,7 @@ export default function SettingsView({ isSystemActive }: SettingsProps) {
   const [authError, setAuthError] = useState(false)
 
   const [newPin, setNewPin] = useState('')
-  const [faceCount, setFaceCount] = useState(0)
 
-  const [isScanningFace, setIsScanningFace] = useState(false)
-  const [enrollStatus, setEnrollStatus] = useState('')
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
