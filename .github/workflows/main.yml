@@ -1,4 +1,4 @@
-Tehzeeb AI OS Release Suite
+name: Tehzeeb AI OS Release Suite
 
 on:
   push:
@@ -114,3 +114,4 @@ jobs:
               - Standard uninstaller registered inside Windows Settings / Control Panel for safe removal.
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+          
